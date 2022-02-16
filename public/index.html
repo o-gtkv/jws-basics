@@ -5,11 +5,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="style.css">
     <title>JWT token basics</title>
+    <script defer src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script defer src="browser-app.js"></script>
 </head>
 
 <body>
-    <h1>JWT</h1>
+    <form id="form-login" class="form-login hidden">
+        <div id="anuthorized-info">
+            <h4 class="t-center">You aren't authorized!</h4>
+            <h5 class="t-center">To get access to this part of site please input your name and password.</h5>
+        </div>
+        <div>
+            <label class="d-block form-login--label">username</label>
+            <input class="form-login--control" id="form-login--username" type="text">
+        </div>
+        <div>
+            <label class="d-block form-login--label" for="password">password</label>
+            <input class="form-login--control" id="form-login--password" type="password">
+        </div>
+        <div class="t-right">
+            <input class="form-login--control btn" type="submit" value="submit">
+        </div>
+        <h3 class="hidden t-center" id="form-login--error-msg"></h3>
+    </form>
+    <div id="dashboard" class="dashboard hidden">
+        <h2 class="t-center">Dashboard</h2>
+        <h3 class="hidden t-center" id="dashboard--error-msg"></h3>
+        <div class="t-center">
+            <input id="dashboard--btn" class="btn" type="button" value="Get lucky number">
+            <h5 id="dashboard--msg" class="t-center"></h5>
+            <input id="dashboard--logout" class="logout-btn" type="button" value="Logout">
+        </div>
+    </div>
 </body>
 
 </html>

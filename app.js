@@ -1,8 +1,8 @@
-// require('dotenv').config()
+require('express-async-errors')
 const express = require('express')
 const errorHandlerMiddleware = require('./middleware/error-handler')
 const notFoundMiddleware = require('./middleware/not-found')
-require('express-async-errors')
+const router = require('./routes/main')
 
 const app = express()
 
@@ -11,15 +11,19 @@ app.use(
     express.json()
 )
 
-app.use(
-    errorHandlerMiddleware,
-    notFoundMiddleware
-)
+app.use('/api/v1', router)
 
-const port = process.env.PORT || 3000
-try {
-    app.listen(port, () => console.log(`Listen on port ${port}`))
+app.use(notFoundMiddleware)
+app.use(errorHandlerMiddleware)
+
+const start = async () => {
+    const port = process.env.PORT || 3000
+    try {
+        app.listen(port, () => console.log(`Listen on port ${port}`))
+    }
+    catch (error) {
+        console.log(error)
+    }
 }
-catch (error) {
-    console.log(error)
-}
+
+start()
