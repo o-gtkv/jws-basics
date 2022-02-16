@@ -10,15 +10,13 @@ app.use(
     express.static('./public'),
     express.json()
 )
-
 app.use('/api/v1', router)
-
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
 
 const start = async () => {
-    const port = process.env.PORT || 3000
     try {
+        const port = process.env.PORT || 3000
         app.listen(port, () => console.log(`Listen on port ${port}`))
     }
     catch (error) {

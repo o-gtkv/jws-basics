@@ -1,5 +1,12 @@
 const formLoginDOM = document.getElementById('form-login')
+const formLoginUsernameDOM = document.getElementById('form-login--username')
+const formLoginPasswordDOM = document.getElementById('form-login--password')
+const formLoginErrorMsg = document.getElementById('form-login--error-msg')
+
 const dashboardDOM = document.getElementById('dashboard')
+const dashboardBtnDOM = document.getElementById('dashboard--btn')
+const dashboardMsgDOM = document.getElementById('dashboard--msg')
+const dashboardErrorMsgDOM = document.getElementById('dashboard--error-msg')
 
 const token = localStorage.getItem('token')
 if (!token)
@@ -10,8 +17,6 @@ else
 formLoginDOM.addEventListener('submit', async (e) => {
     e.preventDefault()
     try {
-        const formLoginUsernameDOM = document.getElementById('form-login--username')
-        const formLoginPasswordDOM = document.getElementById('form-login--password')
         const { data } = await axios.post('api/v1/login', {
             name: formLoginUsernameDOM.value,
             password: formLoginPasswordDOM.value
@@ -23,14 +28,11 @@ formLoginDOM.addEventListener('submit', async (e) => {
         formLoginPasswordDOM.value = ''
     }
     catch (error) {
-        const formLoginErrorMsg = document.getElementById('form-login--error-msg')
         formLoginErrorMsg.classList.remove('hidden')
-        formLoginErrorMsg.innerText = error
+        formLoginErrorMsg.innerText = error.response.data.msg
         setTimeout(() => formLoginErrorMsg.classList.add('hidden'), 3000)
     }
 })
-
-const dashboardBtnDOM = document.getElementById('dashboard--btn')
 
 dashboardBtnDOM.addEventListener('click', async (e) => {
     try {
@@ -41,19 +43,18 @@ dashboardBtnDOM.addEventListener('click', async (e) => {
             }
         })
         const { name, number } = data
-        const dashboardMsgDOM = document.getElementById('dashboard--msg')
         dashboardMsgDOM.innerText = `Hello ${name}, your lucky number is ${number}`
     }
     catch (error) {
-        const dashboardErrorMsg = document.getElementById('dashboard--error-msg')
-        dashboardErrorMsg.classList.remove('hidden')
-        dashboardErrorMsg.innerText = error
-        setTimeout(() => dashboardErrorMsg.classList.add('hidden'), 3000)
+        dashboardErrorMsgDOM.classList.remove('hidden')
+        dashboardErrorMsgDOM.innerText = error.response.data.msg
+        setTimeout(() => dashboardErrorMsgDOM.classList.add('hidden'), 3000)
     }
 })
 
 const dashboardLogout = document.getElementById('dashboard--logout')
 dashboardLogout.addEventListener('click', () => {
+    dashboardMsgDOM.innerText = ''
     localStorage.removeItem('token')
     dashboardDOM.classList.add('hidden')
     formLoginDOM.classList.remove('hidden')
