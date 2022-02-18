@@ -1,4 +1,5 @@
-const { CustomAPIError } = require('../errors/custom-error')
+const { CustomAPIError } = require('../errors')
+const { StatusCodes, getReasonPhrase } = require('http-status-codes')
 
 const errorHandlerMiddleware = (err, req, res, next) => {
     if (err instanceof CustomAPIError) {
@@ -6,8 +7,8 @@ const errorHandlerMiddleware = (err, req, res, next) => {
             msg: err.message
         })
     }
-    return res.status(500).json({
-        msg: 'Internal server error'
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        msg: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR)
     })
 }
 
